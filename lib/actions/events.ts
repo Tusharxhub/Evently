@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getSession } from "../auth/server";
 import { prisma } from "../prisma";
 import { RsvpStatus } from "@/app/generated/prisma/enums";
+import { generateInviteToken } from "../security/csrf.server";
 
 function parseCreateEvent(formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
@@ -77,7 +78,7 @@ export async function createInviteLinkAction(eventId: string) {
     throw new Error("Event not found.");
   }
 
-  const token = crypto.randomUUID().replace(/-/g, "");
+  const token = generateInviteToken();
 
   await prisma.eventInvite.upsert({
     where: { eventId },

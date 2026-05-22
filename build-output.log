@@ -1,0 +1,55 @@
+
+> event-planner-tut@0.1.0 build
+> next build
+
+▲ Next.js 16.2.6 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 4.8s
+  Running TypeScript ...
+  Finished TypeScript in 6.6s ...
+  Collecting page data using 12 workers ...
+  Generating static pages using 12 workers (0/11) ...
+[neon-auth] Cookie validation error before getSession upstream call {
+  component: 'server-api',
+  detail: "Dynamic server usage: Route /dashboard couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  err: Error: Dynamic server usage: Route /dashboard couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+      at y (.next/server/chunks/ssr/[root-of-the-server]__06u5mnq._.js:1:51511)
+      at n (.next/server/chunks/ssr/[root-of-the-server]__06u5mnq._.js:4:8937)
+      at dw (.next/server/chunks/ssr/[root-of-the-server]__06u5mnq._.js:24:105285)
+      at k.getSession (.next/server/chunks/ssr/[root-of-the-server]__06u5mnq._.js:24:116565)
+      at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__06u5mnq._.js:24:118453)
+      at h (.next/server/chunks/ssr/[root-of-the-server]__0e505us._.js:1:20400) {
+    description: "Route /dashboard couldn't be rendered statically because it used `cookies`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+    digest: 'DYNAMIC_SERVER_USAGE'
+  }
+}
+  Generating static pages using 12 workers (2/11) 
+  Generating static pages using 12 workers (5/11) 
+  Generating static pages using 12 workers (8/11) 
+✓ Generating static pages using 12 workers (11/11) in 868ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ● /account/[path]
+│ ├ /account/settings
+│ ├ /account/security
+│ ├ /account/teams
+│ └ [+2 more paths]
+├ ƒ /api/auth/[...path]
+├ ƒ /auth/[path]
+├ ƒ /dashboard
+├ ƒ /events/[eventId]
+├ ○ /events/new
+└ ƒ /invite/[token]
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
