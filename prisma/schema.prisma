@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../app/generated/prisma"
@@ -12,58 +7,141 @@ datasource db {
   provider = "postgresql"
 }
 
+// ─── Auth Models (NextAuth adapter) ────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  bio           String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  events   Event[]
+  rsvps    Rsvp[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── App Models ────────────────────────────────────────────────
+
+enum Role {
+  USER
+  ADMIN
+}
+
 enum RsvpStatus {
-  going
-  maybe
-  not_going
+  GOING
+  MAYBE
+  NOT_GOING
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  color       String   @default("#6366f1")
+  createdAt   DateTime @default(now())
+
+  events Event[]
 }
 
 model Event {
-  id String @id @default(uuid()) @db.Uuid
-  ownerUserId String    @map("owner_user_id")
+  id          String    @id @default(cuid())
   title       String
-  description String?
+  slug        String    @unique
+  description String?   @db.Text
   location    String?
-  eventDate   DateTime? @map("event_date") @db.Timestamptz(6)
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  venue       String?
+  imageUrl    String?
+  eventDate   DateTime?
+  endDate     DateTime?
+  capacity    Int?
+  price       Float     @default(0)
+  isFree      Boolean   @default(true)
+  isPublished Boolean   @default(false)
 
-  invite EventInvite?
-  rsvps EventRsvp[]
+  categoryId  String?
+  organizerId String
 
-  @@index([ownerUserId, createdAt(sort: Desc)], map: "idx_events_owner")
-  @@map("events")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  organizer User     @relation(fields: [organizerId], references: [id], onDelete: Cascade)
+  rsvps    Rsvp[]
+  invites  EventInvite[]
+
+  @@index([organizerId])
+  @@index([categoryId])
+  @@index([eventDate])
+  @@index([isPublished])
+}
+
+model Rsvp {
+  id      String     @id @default(cuid())
+  status  RsvpStatus @default(GOING)
+  note    String?
+
+  eventId String
+  userId  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
 }
 
 model EventInvite {
-  id        String   @id @default(uuid()) @db.Uuid
-  eventId   String   @unique @map("event_id") @db.Uuid
-  token     String   @unique
+  id      String @id @default(cuid())
+  eventId String
+  token   String @unique
 
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-
-  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  rsvps EventRsvp[]
-
-  @@map("event_invites")
-}
-
-model EventRsvp {
-  id  String     @id @default(uuid()) @db.Uuid
-  eventId String @map("event_id") @db.Uuid
-  inviteId        String?    @map("invite_id") @db.Uuid
-  name            String
-  email           String
-  emailNormalized String   @map("email_normalized")
-  status RsvpStatus
-  respondedAt     DateTime   @default(now()) @map("responded_at") @db.Timestamptz(6)
-  createdAt       DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt       DateTime   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now())
 
   event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  invite EventInvite? @relation(fields: [inviteId], references: [id], onDelete: SetNull)
-
-  @@unique([eventId, emailNormalized])
-  @@index([eventId, respondedAt(sort: Desc)], map: "idx_rsvps_event")
-  @@map("event_rsvps")
 }

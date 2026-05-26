@@ -74,7 +74,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/account/api-keys": {
+    "/admin/categories": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -87,8 +87,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/account/[path]",
-      "dataRoute": "/account/api-keys.rsc",
+      "srcRoute": "/admin/categories",
+      "dataRoute": "/admin/categories.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -98,7 +98,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/account/organizations": {
+    "/dashboard/profile": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -111,8 +111,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/account/[path]",
-      "dataRoute": "/account/organizations.rsc",
+      "srcRoute": "/dashboard/profile",
+      "dataRoute": "/dashboard/profile.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -122,7 +122,7 @@
         "x-next-revalidate-tag-token"
       ]
     },
-    "/account/security": {
+    "/dashboard/settings": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -135,80 +135,8 @@
         }
       ],
       "initialRevalidateSeconds": false,
-      "srcRoute": "/account/[path]",
-      "dataRoute": "/account/security.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
-    "/account/settings": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "next-action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/account/[path]",
-      "dataRoute": "/account/settings.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
-    "/account/teams": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "next-action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/account/[path]",
-      "dataRoute": "/account/teams.rsc",
-      "allowHeader": [
-        "host",
-        "x-matched-path",
-        "x-prerender-revalidate",
-        "x-prerender-revalidate-if-generated",
-        "x-next-revalidated-tags",
-        "x-next-revalidate-tag-token"
-      ]
-    },
-    "/events/new": {
-      "experimentalBypassFor": [
-        {
-          "type": "header",
-          "key": "next-action"
-        },
-        {
-          "type": "header",
-          "key": "content-type",
-          "value": "multipart/form-data;.*"
-        }
-      ],
-      "initialRevalidateSeconds": false,
-      "srcRoute": "/events/new",
-      "dataRoute": "/events/new.rsc",
+      "srcRoute": "/dashboard/settings",
+      "dataRoute": "/dashboard/settings.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -246,10 +174,8 @@
         "x-next-revalidated-tags",
         "x-next-revalidate-tag-token"
       ]
-    }
-  },
-  "dynamicRoutes": {
-    "/account/[path]": {
+    },
+    "/pricing": {
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -261,13 +187,57 @@
           "value": "multipart/form-data;.*"
         }
       ],
-      "routeRegex": "^/account/([^/]+?)(?:/)?$",
-      "dataRoute": "/account/[path].rsc",
-      "fallback": null,
-      "fallbackRootParams": [],
-      "fallbackRouteParams": [],
-      "dataRouteRegex": "^/account/([^/]+?)\\.rsc$",
-      "prefetchDataRoute": null,
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/pricing",
+      "dataRoute": "/pricing.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/sign-in": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/sign-in",
+      "dataRoute": "/sign-in.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/sign-up": {
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/sign-up",
+      "dataRoute": "/sign-up.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -278,6 +248,7 @@
       ]
     }
   },
+  "dynamicRoutes": {},
   "notFoundRoutes": [],
   "preview": {
     "previewModeId": "75146216fb3e1806274787ca9dff7fe4",

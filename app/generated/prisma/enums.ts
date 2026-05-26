@@ -9,10 +9,18 @@
 * 🟢 You can import this file directly.
 */
 
+export const Role = {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+} as const
+
+export type Role = (typeof Role)[keyof typeof Role]
+
+
 export const RsvpStatus = {
-  going: 'going',
-  maybe: 'maybe',
-  not_going: 'not_going'
+  GOING: 'GOING',
+  MAYBE: 'MAYBE',
+  NOT_GOING: 'NOT_GOING'
 } as const
 
 export type RsvpStatus = (typeof RsvpStatus)[keyof typeof RsvpStatus]

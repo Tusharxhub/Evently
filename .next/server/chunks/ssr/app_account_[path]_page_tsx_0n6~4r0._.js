@@ -1,3 +1,0 @@
-module.exports=[83852,a=>{"use strict";var b=a.i(7997),c=a.i(7554),c=c,c=c;a.i(84347),a.i(45344),a.i(94219);var d={SETTINGS:"settings",SECURITY:"security",TEAMS:"teams",API_KEYS:"api-keys",ORGANIZATIONS:"organizations"};async function e({params:a}){let{path:d}=await a;return(0,b.jsx)("main",{className:"container p-4 md:p-6",children:(0,b.jsx)(c.AccountView,{path:d})})}a.s(["default",0,e,"generateStaticParams",0,function(){return Object.values(d).map(a=>({path:a}))}],83852)},18997,a=>{a.n(a.i(83852))}];
-
-//# sourceMappingURL=app_account_%5Bpath%5D_page_tsx_0n6~4r0._.js.map

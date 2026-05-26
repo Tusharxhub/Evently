@@ -151,7 +151,7 @@ export type EventInviteGroupByOutputType = {
   _max: EventInviteMaxAggregateOutputType | null
 }
 
-type GetEventInviteGroupByPayload<T extends EventInviteGroupByArgs> = Prisma.PrismaPromise<
+export type GetEventInviteGroupByPayload<T extends EventInviteGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<EventInviteGroupByOutputType, T['by']> &
       {
@@ -170,12 +170,11 @@ export type EventInviteWhereInput = {
   AND?: Prisma.EventInviteWhereInput | Prisma.EventInviteWhereInput[]
   OR?: Prisma.EventInviteWhereInput[]
   NOT?: Prisma.EventInviteWhereInput | Prisma.EventInviteWhereInput[]
-  id?: Prisma.UuidFilter<"EventInvite"> | string
-  eventId?: Prisma.UuidFilter<"EventInvite"> | string
+  id?: Prisma.StringFilter<"EventInvite"> | string
+  eventId?: Prisma.StringFilter<"EventInvite"> | string
   token?: Prisma.StringFilter<"EventInvite"> | string
   createdAt?: Prisma.DateTimeFilter<"EventInvite"> | Date | string
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>
-  rsvps?: Prisma.EventRsvpListRelationFilter
 }
 
 export type EventInviteOrderByWithRelationInput = {
@@ -184,20 +183,18 @@ export type EventInviteOrderByWithRelationInput = {
   token?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   event?: Prisma.EventOrderByWithRelationInput
-  rsvps?: Prisma.EventRsvpOrderByRelationAggregateInput
 }
 
 export type EventInviteWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  eventId?: string
   token?: string
   AND?: Prisma.EventInviteWhereInput | Prisma.EventInviteWhereInput[]
   OR?: Prisma.EventInviteWhereInput[]
   NOT?: Prisma.EventInviteWhereInput | Prisma.EventInviteWhereInput[]
+  eventId?: Prisma.StringFilter<"EventInvite"> | string
   createdAt?: Prisma.DateTimeFilter<"EventInvite"> | Date | string
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>
-  rsvps?: Prisma.EventRsvpListRelationFilter
-}, "id" | "eventId" | "token">
+}, "id" | "token">
 
 export type EventInviteOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -213,8 +210,8 @@ export type EventInviteScalarWhereWithAggregatesInput = {
   AND?: Prisma.EventInviteScalarWhereWithAggregatesInput | Prisma.EventInviteScalarWhereWithAggregatesInput[]
   OR?: Prisma.EventInviteScalarWhereWithAggregatesInput[]
   NOT?: Prisma.EventInviteScalarWhereWithAggregatesInput | Prisma.EventInviteScalarWhereWithAggregatesInput[]
-  id?: Prisma.UuidWithAggregatesFilter<"EventInvite"> | string
-  eventId?: Prisma.UuidWithAggregatesFilter<"EventInvite"> | string
+  id?: Prisma.StringWithAggregatesFilter<"EventInvite"> | string
+  eventId?: Prisma.StringWithAggregatesFilter<"EventInvite"> | string
   token?: Prisma.StringWithAggregatesFilter<"EventInvite"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"EventInvite"> | Date | string
 }
@@ -223,8 +220,7 @@ export type EventInviteCreateInput = {
   id?: string
   token: string
   createdAt?: Date | string
-  event: Prisma.EventCreateNestedOneWithoutInviteInput
-  rsvps?: Prisma.EventRsvpCreateNestedManyWithoutInviteInput
+  event: Prisma.EventCreateNestedOneWithoutInvitesInput
 }
 
 export type EventInviteUncheckedCreateInput = {
@@ -232,15 +228,13 @@ export type EventInviteUncheckedCreateInput = {
   eventId: string
   token: string
   createdAt?: Date | string
-  rsvps?: Prisma.EventRsvpUncheckedCreateNestedManyWithoutInviteInput
 }
 
 export type EventInviteUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  event?: Prisma.EventUpdateOneRequiredWithoutInviteNestedInput
-  rsvps?: Prisma.EventRsvpUpdateManyWithoutInviteNestedInput
+  event?: Prisma.EventUpdateOneRequiredWithoutInvitesNestedInput
 }
 
 export type EventInviteUncheckedUpdateInput = {
@@ -248,7 +242,6 @@ export type EventInviteUncheckedUpdateInput = {
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  rsvps?: Prisma.EventRsvpUncheckedUpdateManyWithoutInviteNestedInput
 }
 
 export type EventInviteCreateManyInput = {
@@ -271,9 +264,14 @@ export type EventInviteUncheckedUpdateManyInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type EventInviteNullableScalarRelationFilter = {
-  is?: Prisma.EventInviteWhereInput | null
-  isNot?: Prisma.EventInviteWhereInput | null
+export type EventInviteListRelationFilter = {
+  every?: Prisma.EventInviteWhereInput
+  some?: Prisma.EventInviteWhereInput
+  none?: Prisma.EventInviteWhereInput
+}
+
+export type EventInviteOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type EventInviteCountOrderByAggregateInput = {
@@ -297,66 +295,58 @@ export type EventInviteMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
-export type EventInviteCreateNestedOneWithoutEventInput = {
-  create?: Prisma.XOR<Prisma.EventInviteCreateWithoutEventInput, Prisma.EventInviteUncheckedCreateWithoutEventInput>
-  connectOrCreate?: Prisma.EventInviteCreateOrConnectWithoutEventInput
-  connect?: Prisma.EventInviteWhereUniqueInput
+export type EventInviteCreateNestedManyWithoutEventInput = {
+  create?: Prisma.XOR<Prisma.EventInviteCreateWithoutEventInput, Prisma.EventInviteUncheckedCreateWithoutEventInput> | Prisma.EventInviteCreateWithoutEventInput[] | Prisma.EventInviteUncheckedCreateWithoutEventInput[]
+  connectOrCreate?: Prisma.EventInviteCreateOrConnectWithoutEventInput | Prisma.EventInviteCreateOrConnectWithoutEventInput[]
+  createMany?: Prisma.EventInviteCreateManyEventInputEnvelope
+  connect?: Prisma.EventInviteWhereUniqueInput | Prisma.EventInviteWhereUniqueInput[]
 }
 
-export type EventInviteUncheckedCreateNestedOneWithoutEventInput = {
-  create?: Prisma.XOR<Prisma.EventInviteCreateWithoutEventInput, Prisma.EventInviteUncheckedCreateWithoutEventInput>
-  connectOrCreate?: Prisma.EventInviteCreateOrConnectWithoutEventInput
-  connect?: Prisma.EventInviteWhereUniqueInput
+export type EventInviteUncheckedCreateNestedManyWithoutEventInput = {
+  create?: Prisma.XOR<Prisma.EventInviteCreateWithoutEventInput, Prisma.EventInviteUncheckedCreateWithoutEventInput> | Prisma.EventInviteCreateWithoutEventInput[] | Prisma.EventInviteUncheckedCreateWithoutEventInput[]
+  connectOrCreate?: Prisma.EventInviteCreateOrConnectWithoutEventInput | Prisma.EventInviteCreateOrConnectWithoutEventInput[]
+  createMany?: Prisma.EventInviteCreateManyEventInputEnvelope
+  connect?: Prisma.EventInviteWhereUniqueInput | Prisma.EventInviteWhereUniqueInput[]
 }
 
-export type EventInviteUpdateOneWithoutEventNestedInput = {
-  create?: Prisma.XOR<Prisma.EventInviteCreateWithoutEventInput, Prisma.EventInviteUncheckedCreateWithoutEventInput>
-  connectOrCreate?: Prisma.EventInviteCreateOrConnectWithoutEventInput
-  upsert?: Prisma.EventInviteUpsertWithoutEventInput
-  disconnect?: Prisma.EventInviteWhereInput | boolean
-  delete?: Prisma.EventInviteWhereInput | boolean
-  connect?: Prisma.EventInviteWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.EventInviteUpdateToOneWithWhereWithoutEventInput, Prisma.EventInviteUpdateWithoutEventInput>, Prisma.EventInviteUncheckedUpdateWithoutEventInput>
+export type EventInviteUpdateManyWithoutEventNestedInput = {
+  create?: Prisma.XOR<Prisma.EventInviteCreateWithoutEventInput, Prisma.EventInviteUncheckedCreateWithoutEventInput> | Prisma.EventInviteCreateWithoutEventInput[] | Prisma.EventInviteUncheckedCreateWithoutEventInput[]
+  connectOrCreate?: Prisma.EventInviteCreateOrConnectWithoutEventInput | Prisma.EventInviteCreateOrConnectWithoutEventInput[]
+  upsert?: Prisma.EventInviteUpsertWithWhereUniqueWithoutEventInput | Prisma.EventInviteUpsertWithWhereUniqueWithoutEventInput[]
+  createMany?: Prisma.EventInviteCreateManyEventInputEnvelope
+  set?: Prisma.EventInviteWhereUniqueInput | Prisma.EventInviteWhereUniqueInput[]
+  disconnect?: Prisma.EventInviteWhereUniqueInput | Prisma.EventInviteWhereUniqueInput[]
+  delete?: Prisma.EventInviteWhereUniqueInput | Prisma.EventInviteWhereUniqueInput[]
+  connect?: Prisma.EventInviteWhereUniqueInput | Prisma.EventInviteWhereUniqueInput[]
+  update?: Prisma.EventInviteUpdateWithWhereUniqueWithoutEventInput | Prisma.EventInviteUpdateWithWhereUniqueWithoutEventInput[]
+  updateMany?: Prisma.EventInviteUpdateManyWithWhereWithoutEventInput | Prisma.EventInviteUpdateManyWithWhereWithoutEventInput[]
+  deleteMany?: Prisma.EventInviteScalarWhereInput | Prisma.EventInviteScalarWhereInput[]
 }
 
-export type EventInviteUncheckedUpdateOneWithoutEventNestedInput = {
-  create?: Prisma.XOR<Prisma.EventInviteCreateWithoutEventInput, Prisma.EventInviteUncheckedCreateWithoutEventInput>
-  connectOrCreate?: Prisma.EventInviteCreateOrConnectWithoutEventInput
-  upsert?: Prisma.EventInviteUpsertWithoutEventInput
-  disconnect?: Prisma.EventInviteWhereInput | boolean
-  delete?: Prisma.EventInviteWhereInput | boolean
-  connect?: Prisma.EventInviteWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.EventInviteUpdateToOneWithWhereWithoutEventInput, Prisma.EventInviteUpdateWithoutEventInput>, Prisma.EventInviteUncheckedUpdateWithoutEventInput>
-}
-
-export type EventInviteCreateNestedOneWithoutRsvpsInput = {
-  create?: Prisma.XOR<Prisma.EventInviteCreateWithoutRsvpsInput, Prisma.EventInviteUncheckedCreateWithoutRsvpsInput>
-  connectOrCreate?: Prisma.EventInviteCreateOrConnectWithoutRsvpsInput
-  connect?: Prisma.EventInviteWhereUniqueInput
-}
-
-export type EventInviteUpdateOneWithoutRsvpsNestedInput = {
-  create?: Prisma.XOR<Prisma.EventInviteCreateWithoutRsvpsInput, Prisma.EventInviteUncheckedCreateWithoutRsvpsInput>
-  connectOrCreate?: Prisma.EventInviteCreateOrConnectWithoutRsvpsInput
-  upsert?: Prisma.EventInviteUpsertWithoutRsvpsInput
-  disconnect?: Prisma.EventInviteWhereInput | boolean
-  delete?: Prisma.EventInviteWhereInput | boolean
-  connect?: Prisma.EventInviteWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.EventInviteUpdateToOneWithWhereWithoutRsvpsInput, Prisma.EventInviteUpdateWithoutRsvpsInput>, Prisma.EventInviteUncheckedUpdateWithoutRsvpsInput>
+export type EventInviteUncheckedUpdateManyWithoutEventNestedInput = {
+  create?: Prisma.XOR<Prisma.EventInviteCreateWithoutEventInput, Prisma.EventInviteUncheckedCreateWithoutEventInput> | Prisma.EventInviteCreateWithoutEventInput[] | Prisma.EventInviteUncheckedCreateWithoutEventInput[]
+  connectOrCreate?: Prisma.EventInviteCreateOrConnectWithoutEventInput | Prisma.EventInviteCreateOrConnectWithoutEventInput[]
+  upsert?: Prisma.EventInviteUpsertWithWhereUniqueWithoutEventInput | Prisma.EventInviteUpsertWithWhereUniqueWithoutEventInput[]
+  createMany?: Prisma.EventInviteCreateManyEventInputEnvelope
+  set?: Prisma.EventInviteWhereUniqueInput | Prisma.EventInviteWhereUniqueInput[]
+  disconnect?: Prisma.EventInviteWhereUniqueInput | Prisma.EventInviteWhereUniqueInput[]
+  delete?: Prisma.EventInviteWhereUniqueInput | Prisma.EventInviteWhereUniqueInput[]
+  connect?: Prisma.EventInviteWhereUniqueInput | Prisma.EventInviteWhereUniqueInput[]
+  update?: Prisma.EventInviteUpdateWithWhereUniqueWithoutEventInput | Prisma.EventInviteUpdateWithWhereUniqueWithoutEventInput[]
+  updateMany?: Prisma.EventInviteUpdateManyWithWhereWithoutEventInput | Prisma.EventInviteUpdateManyWithWhereWithoutEventInput[]
+  deleteMany?: Prisma.EventInviteScalarWhereInput | Prisma.EventInviteScalarWhereInput[]
 }
 
 export type EventInviteCreateWithoutEventInput = {
   id?: string
   token: string
   createdAt?: Date | string
-  rsvps?: Prisma.EventRsvpCreateNestedManyWithoutInviteInput
 }
 
 export type EventInviteUncheckedCreateWithoutEventInput = {
   id?: string
   token: string
   createdAt?: Date | string
-  rsvps?: Prisma.EventRsvpUncheckedCreateNestedManyWithoutInviteInput
 }
 
 export type EventInviteCreateOrConnectWithoutEventInput = {
@@ -364,104 +354,61 @@ export type EventInviteCreateOrConnectWithoutEventInput = {
   create: Prisma.XOR<Prisma.EventInviteCreateWithoutEventInput, Prisma.EventInviteUncheckedCreateWithoutEventInput>
 }
 
-export type EventInviteUpsertWithoutEventInput = {
-  update: Prisma.XOR<Prisma.EventInviteUpdateWithoutEventInput, Prisma.EventInviteUncheckedUpdateWithoutEventInput>
-  create: Prisma.XOR<Prisma.EventInviteCreateWithoutEventInput, Prisma.EventInviteUncheckedCreateWithoutEventInput>
-  where?: Prisma.EventInviteWhereInput
+export type EventInviteCreateManyEventInputEnvelope = {
+  data: Prisma.EventInviteCreateManyEventInput | Prisma.EventInviteCreateManyEventInput[]
+  skipDuplicates?: boolean
 }
 
-export type EventInviteUpdateToOneWithWhereWithoutEventInput = {
-  where?: Prisma.EventInviteWhereInput
+export type EventInviteUpsertWithWhereUniqueWithoutEventInput = {
+  where: Prisma.EventInviteWhereUniqueInput
+  update: Prisma.XOR<Prisma.EventInviteUpdateWithoutEventInput, Prisma.EventInviteUncheckedUpdateWithoutEventInput>
+  create: Prisma.XOR<Prisma.EventInviteCreateWithoutEventInput, Prisma.EventInviteUncheckedCreateWithoutEventInput>
+}
+
+export type EventInviteUpdateWithWhereUniqueWithoutEventInput = {
+  where: Prisma.EventInviteWhereUniqueInput
   data: Prisma.XOR<Prisma.EventInviteUpdateWithoutEventInput, Prisma.EventInviteUncheckedUpdateWithoutEventInput>
+}
+
+export type EventInviteUpdateManyWithWhereWithoutEventInput = {
+  where: Prisma.EventInviteScalarWhereInput
+  data: Prisma.XOR<Prisma.EventInviteUpdateManyMutationInput, Prisma.EventInviteUncheckedUpdateManyWithoutEventInput>
+}
+
+export type EventInviteScalarWhereInput = {
+  AND?: Prisma.EventInviteScalarWhereInput | Prisma.EventInviteScalarWhereInput[]
+  OR?: Prisma.EventInviteScalarWhereInput[]
+  NOT?: Prisma.EventInviteScalarWhereInput | Prisma.EventInviteScalarWhereInput[]
+  id?: Prisma.StringFilter<"EventInvite"> | string
+  eventId?: Prisma.StringFilter<"EventInvite"> | string
+  token?: Prisma.StringFilter<"EventInvite"> | string
+  createdAt?: Prisma.DateTimeFilter<"EventInvite"> | Date | string
+}
+
+export type EventInviteCreateManyEventInput = {
+  id?: string
+  token: string
+  createdAt?: Date | string
 }
 
 export type EventInviteUpdateWithoutEventInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  rsvps?: Prisma.EventRsvpUpdateManyWithoutInviteNestedInput
 }
 
 export type EventInviteUncheckedUpdateWithoutEventInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  rsvps?: Prisma.EventRsvpUncheckedUpdateManyWithoutInviteNestedInput
 }
 
-export type EventInviteCreateWithoutRsvpsInput = {
-  id?: string
-  token: string
-  createdAt?: Date | string
-  event: Prisma.EventCreateNestedOneWithoutInviteInput
-}
-
-export type EventInviteUncheckedCreateWithoutRsvpsInput = {
-  id?: string
-  eventId: string
-  token: string
-  createdAt?: Date | string
-}
-
-export type EventInviteCreateOrConnectWithoutRsvpsInput = {
-  where: Prisma.EventInviteWhereUniqueInput
-  create: Prisma.XOR<Prisma.EventInviteCreateWithoutRsvpsInput, Prisma.EventInviteUncheckedCreateWithoutRsvpsInput>
-}
-
-export type EventInviteUpsertWithoutRsvpsInput = {
-  update: Prisma.XOR<Prisma.EventInviteUpdateWithoutRsvpsInput, Prisma.EventInviteUncheckedUpdateWithoutRsvpsInput>
-  create: Prisma.XOR<Prisma.EventInviteCreateWithoutRsvpsInput, Prisma.EventInviteUncheckedCreateWithoutRsvpsInput>
-  where?: Prisma.EventInviteWhereInput
-}
-
-export type EventInviteUpdateToOneWithWhereWithoutRsvpsInput = {
-  where?: Prisma.EventInviteWhereInput
-  data: Prisma.XOR<Prisma.EventInviteUpdateWithoutRsvpsInput, Prisma.EventInviteUncheckedUpdateWithoutRsvpsInput>
-}
-
-export type EventInviteUpdateWithoutRsvpsInput = {
+export type EventInviteUncheckedUpdateManyWithoutEventInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   token?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  event?: Prisma.EventUpdateOneRequiredWithoutInviteNestedInput
 }
 
-export type EventInviteUncheckedUpdateWithoutRsvpsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  eventId?: Prisma.StringFieldUpdateOperationsInput | string
-  token?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-}
-
-
-/**
- * Count Type EventInviteCountOutputType
- */
-
-export type EventInviteCountOutputType = {
-  rsvps: number
-}
-
-export type EventInviteCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  rsvps?: boolean | EventInviteCountOutputTypeCountRsvpsArgs
-}
-
-/**
- * EventInviteCountOutputType without action
- */
-export type EventInviteCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the EventInviteCountOutputType
-   */
-  select?: Prisma.EventInviteCountOutputTypeSelect<ExtArgs> | null
-}
-
-/**
- * EventInviteCountOutputType without action
- */
-export type EventInviteCountOutputTypeCountRsvpsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.EventRsvpWhereInput
-}
 
 
 export type EventInviteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -470,8 +417,6 @@ export type EventInviteSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   token?: boolean
   createdAt?: boolean
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
-  rsvps?: boolean | Prisma.EventInvite$rsvpsArgs<ExtArgs>
-  _count?: boolean | Prisma.EventInviteCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["eventInvite"]>
 
 export type EventInviteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -500,8 +445,6 @@ export type EventInviteSelectScalar = {
 export type EventInviteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventId" | "token" | "createdAt", ExtArgs["result"]["eventInvite"]>
 export type EventInviteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
-  rsvps?: boolean | Prisma.EventInvite$rsvpsArgs<ExtArgs>
-  _count?: boolean | Prisma.EventInviteCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EventInviteIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
@@ -514,7 +457,6 @@ export type $EventInvitePayload<ExtArgs extends runtime.Types.Extensions.Interna
   name: "EventInvite"
   objects: {
     event: Prisma.$EventPayload<ExtArgs>
-    rsvps: Prisma.$EventRsvpPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -916,7 +858,6 @@ readonly fields: EventInviteFieldRefs;
 export interface Prisma__EventInviteClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   event<T extends Prisma.EventDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventDefaultArgs<ExtArgs>>): Prisma.Prisma__EventClient<runtime.Types.Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  rsvps<T extends Prisma.EventInvite$rsvpsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventInvite$rsvpsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventRsvpPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1348,30 +1289,6 @@ export type EventInviteDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many EventInvites to delete.
    */
   limit?: number
-}
-
-/**
- * EventInvite.rsvps
- */
-export type EventInvite$rsvpsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the EventRsvp
-   */
-  select?: Prisma.EventRsvpSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the EventRsvp
-   */
-  omit?: Prisma.EventRsvpOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.EventRsvpInclude<ExtArgs> | null
-  where?: Prisma.EventRsvpWhereInput
-  orderBy?: Prisma.EventRsvpOrderByWithRelationInput | Prisma.EventRsvpOrderByWithRelationInput[]
-  cursor?: Prisma.EventRsvpWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.EventRsvpScalarFieldEnum | Prisma.EventRsvpScalarFieldEnum[]
 }
 
 /**

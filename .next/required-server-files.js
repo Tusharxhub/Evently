@@ -63,7 +63,12 @@ self.__SERVER_FILES_MANIFEST={
           "search": ""
         }
       ],
-      "remotePatterns": [],
+      "remotePatterns": [
+        {
+          "protocol": "https",
+          "hostname": "**"
+        }
+      ],
       "qualities": [
         75
       ],
@@ -220,6 +225,9 @@ self.__SERVER_FILES_MANIFEST={
       "turbopackFileSystemCacheForBuild": false,
       "turbopackInferModuleSideEffects": true,
       "turbopackPluginRuntimeStrategy": "childProcesses",
+      "serverActions": {
+        "bodySizeLimit": "2mb"
+      },
       "optimizePackageImports": [
         "lucide-react",
         "date-fns",

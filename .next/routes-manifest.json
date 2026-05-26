@@ -23,44 +23,52 @@
   },
   "dynamicRoutes": [
     {
-      "page": "/account/[path]",
-      "regex": "^/account/([^/]+?)(?:/)?$",
-      "routeKeys": {
-        "nxtPpath": "nxtPpath"
-      },
-      "namedRegex": "^/account/(?<nxtPpath>[^/]+?)(?:/)?$"
-    },
-    {
-      "page": "/api/auth/[...path]",
+      "page": "/api/auth/[...nextauth]",
       "regex": "^/api/auth/(.+?)(?:/)?$",
       "routeKeys": {
-        "nxtPpath": "nxtPpath"
+        "nxtPnextauth": "nxtPnextauth"
       },
-      "namedRegex": "^/api/auth/(?<nxtPpath>.+?)(?:/)?$"
+      "namedRegex": "^/api/auth/(?<nxtPnextauth>.+?)(?:/)?$"
     },
     {
-      "page": "/auth/[path]",
-      "regex": "^/auth/([^/]+?)(?:/)?$",
+      "page": "/api/categories/[id]",
+      "regex": "^/api/categories/([^/]+?)(?:/)?$",
       "routeKeys": {
-        "nxtPpath": "nxtPpath"
+        "nxtPid": "nxtPid"
       },
-      "namedRegex": "^/auth/(?<nxtPpath>[^/]+?)(?:/)?$"
+      "namedRegex": "^/api/categories/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
-      "page": "/events/[eventId]",
+      "page": "/api/events/[id]",
+      "regex": "^/api/events/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/events/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/events/[id]/rsvp",
+      "regex": "^/api/events/([^/]+?)/rsvp(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/events/(?<nxtPid>[^/]+?)/rsvp(?:/)?$"
+    },
+    {
+      "page": "/dashboard/events/[id]/edit",
+      "regex": "^/dashboard/events/([^/]+?)/edit(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/dashboard/events/(?<nxtPid>[^/]+?)/edit(?:/)?$"
+    },
+    {
+      "page": "/events/[slug]",
       "regex": "^/events/([^/]+?)(?:/)?$",
       "routeKeys": {
-        "nxtPeventId": "nxtPeventId"
+        "nxtPslug": "nxtPslug"
       },
-      "namedRegex": "^/events/(?<nxtPeventId>[^/]+?)(?:/)?$"
-    },
-    {
-      "page": "/invite/[token]",
-      "regex": "^/invite/([^/]+?)(?:/)?$",
-      "routeKeys": {
-        "nxtPtoken": "nxtPtoken"
-      },
-      "namedRegex": "^/invite/(?<nxtPtoken>[^/]+?)(?:/)?$"
+      "namedRegex": "^/events/(?<nxtPslug>[^/]+?)(?:/)?$"
     }
   ],
   "staticRoutes": [
@@ -83,22 +91,112 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
+      "page": "/admin",
+      "regex": "^/admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin(?:/)?$"
+    },
+    {
+      "page": "/admin/categories",
+      "regex": "^/admin/categories(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/categories(?:/)?$"
+    },
+    {
+      "page": "/admin/events",
+      "regex": "^/admin/events(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/events(?:/)?$"
+    },
+    {
+      "page": "/admin/users",
+      "regex": "^/admin/users(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/users(?:/)?$"
+    },
+    {
+      "page": "/api/auth/register",
+      "regex": "^/api/auth/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/register(?:/)?$"
+    },
+    {
+      "page": "/api/categories",
+      "regex": "^/api/categories(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/categories(?:/)?$"
+    },
+    {
+      "page": "/api/events",
+      "regex": "^/api/events(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/events(?:/)?$"
+    },
+    {
+      "page": "/api/users/profile",
+      "regex": "^/api/users/profile(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/users/profile(?:/)?$"
+    },
+    {
       "page": "/dashboard",
       "regex": "^/dashboard(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/dashboard(?:/)?$"
     },
     {
-      "page": "/events/new",
-      "regex": "^/events/new(?:/)?$",
+      "page": "/dashboard/events",
+      "regex": "^/dashboard/events(?:/)?$",
       "routeKeys": {},
-      "namedRegex": "^/events/new(?:/)?$"
+      "namedRegex": "^/dashboard/events(?:/)?$"
+    },
+    {
+      "page": "/dashboard/events/new",
+      "regex": "^/dashboard/events/new(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/events/new(?:/)?$"
+    },
+    {
+      "page": "/dashboard/profile",
+      "regex": "^/dashboard/profile(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/profile(?:/)?$"
+    },
+    {
+      "page": "/dashboard/settings",
+      "regex": "^/dashboard/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/settings(?:/)?$"
+    },
+    {
+      "page": "/events",
+      "regex": "^/events(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/events(?:/)?$"
     },
     {
       "page": "/favicon.ico",
       "regex": "^/favicon\\.ico(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/pricing",
+      "regex": "^/pricing(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/pricing(?:/)?$"
+    },
+    {
+      "page": "/sign-in",
+      "regex": "^/sign\\-in(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/sign\\-in(?:/)?$"
+    },
+    {
+      "page": "/sign-up",
+      "regex": "^/sign\\-up(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/sign\\-up(?:/)?$"
     }
   ],
   "dataRoutes": [],
