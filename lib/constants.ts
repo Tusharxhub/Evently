@@ -4,6 +4,8 @@ export const APP_DESCRIPTION = "Discover and create unforgettable events. From i
 export const NAV_LINKS = [
   { label: "Events", href: "/events" },
   { label: "Pricing", href: "/pricing" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 export const DASHBOARD_NAV = [

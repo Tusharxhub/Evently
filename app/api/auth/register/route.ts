@@ -3,9 +3,16 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { signUpSchema } from "@/lib/validations";
 import { errorResponse, createdResponse, handleApiError } from "@/lib/api-response";
+import { getClientIp, isRateLimited, rateLimitErrorResponse } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    const limitCheck = isRateLimited(ip, "register", { limit: 5, windowMs: 60 * 1000 });
+    if (!limitCheck.success) {
+      return rateLimitErrorResponse(limitCheck.reset);
+    }
+
     const body = await req.json();
     const input = signUpSchema.parse(body);
 

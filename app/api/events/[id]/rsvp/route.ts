@@ -8,6 +8,7 @@ import {
   notFoundResponse,
   handleApiError,
 } from "@/lib/api-response";
+import { getClientIp, isRateLimited, rateLimitErrorResponse } from "@/lib/rate-limit";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -16,6 +17,12 @@ interface RouteParams {
 // POST /api/events/:id/rsvp — Create or update RSVP
 export async function POST(req: NextRequest, { params }: RouteParams) {
   try {
+    const ip = getClientIp(req);
+    const limitCheck = isRateLimited(ip, "rsvp", { limit: 15, windowMs: 60 * 1000 });
+    if (!limitCheck.success) {
+      return rateLimitErrorResponse(limitCheck.reset);
+    }
+
     const session = await auth();
     if (!session) return unauthorizedResponse();
 
