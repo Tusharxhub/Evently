@@ -26,6 +26,7 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
         category: true,
         organizer: { select: { id: true, name: true, image: true } },
         rsvps: {
+          take: 20, // Limit preview list size to avoid massive DB load and response payloads
           include: { user: { select: { name: true, image: true } } },
           orderBy: { createdAt: "desc" },
         },

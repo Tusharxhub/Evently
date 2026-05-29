@@ -1,6 +1,8 @@
 {
   "/(auth)/sign-in/page": "/sign-in",
   "/(auth)/sign-up/page": "/sign-up",
+  "/(public)/about/page": "/about",
+  "/(public)/contact/page": "/contact",
   "/(public)/events/[slug]/page": "/events/[slug]",
   "/(public)/events/page": "/events",
   "/(public)/page": "/",

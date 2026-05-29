@@ -45,6 +45,19 @@ export function handleApiError(error: unknown): NextResponse {
     return errorResponse(message, 422);
   }
 
+  // Handle known database errors safely without leaking internal database logs
+  if (error && typeof error === "object" && "code" in error) {
+    const code = (error as any).code;
+    if (code === "P2002") {
+      const targets = (error as any).meta?.target || [];
+      const fields = Array.isArray(targets) ? targets.join(", ") : String(targets);
+      return errorResponse(`A record with this ${fields || "value"} already exists`, 409);
+    }
+    if (code === "P2025") {
+      return errorResponse("The requested record was not found or is unavailable", 404);
+    }
+  }
+
   if (error instanceof Error) {
     return errorResponse(error.message, 500);
   }

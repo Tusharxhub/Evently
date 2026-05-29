@@ -33,24 +33,26 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
     // Verify event exists and is published
     const event = await prisma.event.findUnique({
       where: { id: eventId, isPublished: true },
-      select: { id: true, capacity: true, _count: { select: { rsvps: true } } },
+      select: { id: true, capacity: true },
     });
 
     if (!event) return notFoundResponse("Event");
 
-    // Check capacity
-    if (
-      event.capacity &&
-      input.status === "GOING" &&
-      event._count.rsvps >= event.capacity
-    ) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          error: "This event is at full capacity",
-        }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
+    // Check capacity if the user plans to attend
+    if (event.capacity && input.status === "GOING") {
+      const goingCount = await prisma.rsvp.count({
+        where: { eventId, status: "GOING" },
+      });
+
+      if (goingCount >= event.capacity) {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            error: "This event is at full capacity",
+          }),
+          { status: 400, headers: { "Content-Type": "application/json" } }
+        );
+      }
     }
 
     // Upsert RSVP
@@ -79,15 +81,21 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
   }
 }
 
-// GET /api/events/:id/rsvp — Get RSVPs for event
+// GET /api/events/:id/rsvp — Get RSVPs for event with pagination
 export async function GET(req: NextRequest, { params }: RouteParams) {
   try {
     const { id: eventId } = await params;
+    const { searchParams } = new URL(req.url);
+    const limit = Math.min(100, parseInt(searchParams.get("limit") || "50", 10));
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10));
+    const skip = (page - 1) * limit;
 
     const rsvps = await prisma.rsvp.findMany({
       where: { eventId },
       include: { user: { select: { name: true, image: true } } },
       orderBy: { createdAt: "desc" },
+      skip,
+      take: limit,
     });
 
     return successResponse(rsvps);

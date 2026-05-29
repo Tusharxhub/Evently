@@ -29,6 +29,23 @@ export function isRateLimited(
 ): { success: boolean; remaining: number; reset: number } {
   const cacheKey = `${key}:${ip}`;
   const now = Date.now();
+
+  // Prevent memory leaks: prune expired records when cache grows too large
+  if (ipCache.size > 1000) {
+    for (const [k, v] of ipCache.entries()) {
+      if (now > v.resetTime) {
+        ipCache.delete(k);
+      }
+    }
+    // If still too large (under heavy/malicious traffic), shed oldest records
+    if (ipCache.size > 1000) {
+      const keysToDelete = Array.from(ipCache.keys()).slice(0, 500);
+      for (const k of keysToDelete) {
+        ipCache.delete(k);
+      }
+    }
+  }
+
   const record = ipCache.get(cacheKey);
 
   if (!record) {

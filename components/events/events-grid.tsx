@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   MapPin,
@@ -77,10 +78,13 @@ export function EventsGrid({
                 {/* Image placeholder */}
                 <div className="relative h-48 bg-gradient-to-br from-primary/10 to-primary/5">
                   {event.imageUrl ? (
-                    <img
+                    <Image
                       src={event.imageUrl}
                       alt={event.title}
-                      className="h-full w-full object-cover"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      priority={i < 3} // Eager load above-the-fold images
                     />
                   ) : (
                     <div className="flex h-full items-center justify-center">

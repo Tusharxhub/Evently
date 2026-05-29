@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   MapPin,
@@ -77,10 +78,13 @@ export function EventDetailClient({
       {/* Header Image */}
       <div className="relative h-64 sm:h-80 rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 mb-8">
         {event.imageUrl ? (
-          <img
+          <Image
             src={event.imageUrl}
             alt={event.title}
-            className="h-full w-full object-cover"
+            fill
+            sizes="(max-width: 1024px) 100vw, 1024px"
+            className="object-cover"
+            priority
           />
         ) : (
           <div className="flex h-full items-center justify-center">

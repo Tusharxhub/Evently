@@ -39,6 +39,7 @@ export async function GET(req: NextRequest) {
     if (params.sort === "oldest") orderBy = { createdAt: "asc" };
     if (params.sort === "price-low") orderBy = { price: "asc" };
     if (params.sort === "price-high") orderBy = { price: "desc" };
+    if (params.sort === "popular") orderBy = { rsvps: { _count: "desc" } };
 
     const skip = (params.page - 1) * params.limit;
 
